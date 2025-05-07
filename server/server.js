@@ -1,7 +1,7 @@
 const express= require('express')
 const mongoose=require('mongoose')
 const cors= require("cors")
-const Mood=require("./Model/db")
+const Mood=require("./models/db")
 const authRoutes=require("./routes/auth")
 require("dotenv").config()
  const app=express();
