@@ -4,7 +4,7 @@ import  axios from "axios"
 import { Link ,useNavigate} from 'react-router-dom';
 
 const Login = () => {
-    const[userId,setuserId]=useState('');
+   const[userId,setuserId]=useState('')
     const[password,setpassword]=useState('');
     const navigate=useNavigate();
 const submitform=async(e)=>{
@@ -14,8 +14,9 @@ try{
         userId,
         password,
     })
-    
+    console.log(response)
     localStorage.setItem('token',response.data.token)
+    localStorage.setItem('userid',userId)
 
     alert("Login successfully")
     navigate("/Home")
@@ -29,7 +30,7 @@ catch(err){
   return (
     <div className="flex flex-col items-center min-h-screen bg-white font-mono" >
     <div className="text-center mt-6">
-      <h1 className="text-3xl font-mono font-bold text-green-600 mt-4">Music Mood Tracker</h1>
+      <h1 className="text-3xl font-mono font-bold text-green-600 p-4">Music Mood Tracker</h1>
     </div>
   
     <div className="w-full max-w-md bg-white mt-6 p-8 rounded-lg shadow-md">

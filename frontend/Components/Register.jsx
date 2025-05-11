@@ -12,7 +12,7 @@ const Register = () => {
   e.preventDefault();
   try{
     const response= await axios.post("http://localhost:8000/api/auth/register",{
-       name,
+         name,
         userId,
         password,
     })
@@ -21,7 +21,7 @@ const Register = () => {
  setname('')
  setuserId('')
  setpassword('')
-
+localStorage.setItem("name",name)
   }
   catch(error){
     console.error("Regestration Eror",error);
@@ -31,15 +31,18 @@ const Register = () => {
     }
    
   return (
-<div className="min-h-screen flex items-center justify-center bg-gray-100 font-mono ">
+<div className="flex flex-col items-center min-h-screen bg-white font-mono" >
+<div className="text-center p-5">
+      <h1 className="text-3xl font-mono font-bold text-green-600 p-4 ">Music Mood Tracker</h1>
+    </div>
   
   <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
- 
-    <h1 className="text-3xl font-bold text-center text-blue-700 mb-6">Register</h1>
+
+    <h1 className="text-2xl font-semibold text-center text-pink-950 mb-6">Register</h1>
 
     <form onSubmit={handleregister} className="space-y-4">
       <div>
-        <label className="block text-gray-700 font-medium mb-1">Name</label>
+        <label className="block font-medium mb-1 text-pink-950">Name</label>
         <input
           type="text"
           placeholder="Name"
@@ -50,7 +53,7 @@ const Register = () => {
       </div>
 
       <div>
-        <label className="block text-gray-700 font-medium mb-1">User ID</label>
+        <label className="block font-medium mb-1 text-pink-950">User ID</label>
         <input
           type="text"
           placeholder="User ID"
@@ -61,7 +64,7 @@ const Register = () => {
       </div>
 
       <div>
-        <label className="block text-gray-700 font-medium mb-1">Password</label>
+        <label className="">Password</label>
         <input
           type="password"
           placeholder="Enter your password"
@@ -73,7 +76,7 @@ const Register = () => {
 
       <button
         type="submit"
-        className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+        className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >
         Submit
       </button>

@@ -17,8 +17,11 @@ function App() {
     <Router>
       <Routes>
    <Route path='/' element={<Login/>}/>
-   <Route path='/home' element={<Homepage/>}/>
+   <Route path='/home' element={<ProtectedRoute>
+    <Homepage/> 
+    </ProtectedRoute>}/>
    <Route path='/login' element={<Login/>}/>
+   <Route path='/logmusic' element={<LogMusic/>}/>
    <Route path='/register' element={<Register/>}/>
    <Route path='/Dashboard' element={
    <ProtectedRoute>

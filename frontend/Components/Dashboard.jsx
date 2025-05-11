@@ -8,6 +8,7 @@ const handlogout=()=>{
 }
 
 const userId=localStorage.getItem('userid')
+const name=localStorage.getItem('name')
   return (
     <div>
   <h1>Welcome to your Dashboard</h1>
