@@ -8,7 +8,7 @@ const Register = () => {
 
 
     const handleregister=async(e)=>{
-        console.log("sending resgestration",{name,userId,password})
+
   e.preventDefault();
   try{
     const response= await axios.post("http://localhost:8000/api/auth/register",{

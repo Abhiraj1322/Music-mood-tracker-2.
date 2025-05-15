@@ -14,7 +14,7 @@ try{
         userId,
         password,
     })
-    console.log(response)
+
     localStorage.setItem('token',response.data.token)
     localStorage.setItem('userid',userId)
 

@@ -21,9 +21,11 @@ function App() {
     <Homepage/> 
     </ProtectedRoute>}/>
    <Route path='/login' element={<Login/>}/>
-   <Route path='/logmusic' element={<LogMusic/>}/>
+   <Route path='/logmusic' element={
+    <ProtectedRoute><LogMusic/></ProtectedRoute> 
+    }/>
    <Route path='/register' element={<Register/>}/>
-   <Route path='/Dashboard' element={
+   <Route path='/dashboard' element={
    <ProtectedRoute>
      <Dashboard/>
    </ProtectedRoute>

@@ -37,7 +37,7 @@ const response=await fetch('http://localhost:8000/logMood',{
   body:JSON.stringify(moodData)
 })
 const result= await response.json()
-console.log(result)
+
 alert("Mood loged successfully");
 
 setmood("");
@@ -64,18 +64,23 @@ if (mood) {
 
 
 
-}
+} 
   return (
 
     <div className='font-mono flex flex-col items-center min-h-screen'>
-  <div>
-
-<Link to={"/logmusic"}>Vibe check</Link>
-   <Link to={"/dashboard"}>Dashboard</Link>
-  </div>
-      <div className='text-center mr-[105px] mt-5'>
-      <h1 className='text-3xl font-mono font-bold text-green-600'>Mood Tracker</h1>
+      <div>
+      <h1 className="text-3xl font-mono font-bold text-green-600 pr-[69px] p-4">Music Mood Tracker</h1>
       </div>
+
+    
+    <ul class="flex gap-[25px] ml-[75%]">
+      <li><Link to={"/dashboard"}>Dashboard</Link></li>
+      <li><Link to={"/logmusic"}>Vibe check</Link></li>
+      <li></li>
+    </ul>
+
+    
+     
   <div>
 
 
@@ -87,13 +92,13 @@ if (mood) {
   <label>Userid:</label>
   <p className='inline-block'>{userId}</p>
 </div>
-<div className=''>
+<div className='mt-7'>
 
   <label>Mood</label>
   <select
   value={mood}
   onChange={(e) => setmood(e.target.value)}
-  className="w-full border-2 border-amber-700-mt-2 p-2 rounded-md "
+  className="w-full border-2 border-amber-700  p-2 rounded-md "
 >
   <option value="" className=''>Select a mood</option>
   {/* General Moods */}

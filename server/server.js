@@ -12,9 +12,10 @@ require("dotenv").config()
 
 
    app.post('/logMood', async(req,res) =>{
-      const {userId,mood,songs}=req.body
+      const {userId,mood,}=req.body
       try{
-   const newMood=  new Mood({userId,mood,songs})
+
+   const newMood=  new Mood({userId,mood,})
    await newMood.save()
    res.status(201).json(newMood)
       }
@@ -32,8 +33,36 @@ res.json(moods)
  res.status(500).json({message:"Eror in fetching moode history" ,eror:err})
    }
 })
- 
-app.delete("/deleteMood/:id", async (req, res) => {
+
+////ADD CUSTOM MOOD
+app.get('/cmoods/:userId',async(req,res)=>{
+  try{
+const CustomMoods= await Mood.find({userId:req.params.userId})
+res.json(CustomMoods.map(m=>m.mood))
+  }
+  catch{
+
+  }
+})
+app.post('/addcmoods',async(req,res)=>{
+  const{userId,mood}=req.body;
+  try{
+const exist=await Mood.findOne({userId,mood})
+if(exist){
+  return res.status(400).json({message:"Custom mood already exists"})
+}
+const newcustomMood= new Mood({userId,mood})
+ await newcustomMood.save()
+ res.status(201).json(newcustomMood)
+}
+  catch(err){
+res.status(500).json({message:"Error in submiting mood",error:err})
+  }
+})
+
+
+
+app.delete("/moodhistory/:id", async (req, res) => {
    try {
      const { id } = req.params;  
      const deleteMood = await Mood.findByIdAndDelete(id); 
