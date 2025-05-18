@@ -1,11 +1,13 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
 import { Link ,useNavigate} from 'react-router-dom';
+
 const homepage = () => {  
 
 const [userId,setuserId]=useState("")
 const[mood,setmood]=useState("");
 const [playlist, setPlaylist] = useState([]);
+const[customMood,setcustomMood]=useState([]);
 useEffect(()=>{
   const storeuserid=localStorage.getItem("userid")
   if(storeuserid){
@@ -53,6 +55,7 @@ if (mood) {
 
     const fetchsongs = await fetch(`http://localhost:8000/playlist/${mood}`);
     const data = await fetchsongs.json(); 
+
     const validplaylists= data.filter(item=>item!==null)
     setPlaylist(validplaylists);
 
@@ -63,19 +66,61 @@ if (mood) {
 
 
 
-
 } 
+useEffect(()=>{
+
+const fetchCustomMood= async()=>{
+const fetchmood = await fetch(`http://localhost:8000/cmoods/${users}`)
+const data =await fetchmood.json();
+
+setcustomMood(data)
+
+}
+fetchCustomMood()
+
+},[])
+
+const likePlaylist=async(list)=>{
+  try{
+const playlistdata = {
+    userId: userId, 
+    playlistId: list.id,
+    name: list.name,
+    description: list.description || "",
+    imageUrl: list.images?.[0]?.url || "",
+    playlistUrl: list.external_urls?.spotify || "",
+    tracksTotal: list.tracks?.total || 0,
+  };
+fetch("http://localhost:8000/saved-playlist",{
+  method:'POST',
+  headers:{
+   "Content-Type": "application/json",
+
+  },
+  body:JSON.stringify(playlistdata)
+})
+alert("plalistliked")
+
+  }
+  catch(error){
+
+console.error("Error saving playlist:", error);
+  }
+
+
+}
   return (
 
     <div className='font-mono flex flex-col items-center min-h-screen'>
       <div>
-      <h1 className="text-3xl font-mono font-bold text-green-600 pr-[69px] p-4">Music Mood Tracker</h1>
+      <h1 className="text-3xl font-mono font-bold text-green-600 mr-[132px] mt-3.5 p-5 ">Flow State</h1>
       </div>
 
     
-    <ul class="flex gap-[25px] ml-[75%]">
+    <ul className="flex gap-[25px] ml-[75%]">
       <li><Link to={"/dashboard"}>Dashboard</Link></li>
       <li><Link to={"/logmusic"}>Vibe check</Link></li>
+       <li><Link to={"/customMood"}>Add Mood</Link></li>
       <li></li>
     </ul>
 
@@ -88,11 +133,11 @@ if (mood) {
 <div className='w-full p-24 rounded-lg shadow-cyan-50'>
 <form onSubmit={handleSubmit}>
 
-<div>
-  <label>Userid:</label>
-  <p className='inline-block'>{userId}</p>
+<div className='flex gap-5'>
+  <label className='text-shadow-2xs'>Userid</label>
+  <p className='text-pink-900'>{userId}</p>
 </div>
-<div className='mt-7'>
+<div className='mt-7 flex flex-col gap-3'>
 
   <label>Mood</label>
   <select
@@ -102,14 +147,9 @@ if (mood) {
 >
   <option value="" className=''>Select a mood</option>
   {/* General Moods */}
-  <option value="Happy">Happy</option>
-  <option value="Sad">Sad</option>
-  <option value="Excited">Excited</option>
-  <option value="Relaxed">Relaxed</option>
-  <option value="Angry">Angry</option>
-  <option value="Bored">Bored</option>
-  <option value="Anxious">Anxious</option>
-  <option value="Motivated">Motivated</option>
+{customMood.map((moods, index) => (
+  <option key={index}>{moods}</option>
+))}
 
   {/* Coding Moods */}
   <option value="In the zone">In the zone (coding)</option>
@@ -117,17 +157,14 @@ if (mood) {
   <option value="Code confident">Code confident</option>
   <option value="Stack Overflowing">Stack Overflowing</option>
 
-  {/* Love Moods */}
-  <option value="In love">In love</option>
-  <option value="Heartbroken">Heartbroken</option>
-  <option value="Missing someone">Missing someone</option>
-  <option value="Romantic">Romantic</option>
 </select>
 
 
 </div>
+<div className='flex justify-center mr-[129px] mt-[57px]'>
+<button className='bg-amber-800 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded ' type="submit">Submit Mood</button>
+</div>
 
-<button className='bg-amber-800 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded ml-[40%] mt-14' type="submit">Submit Mood</button>
 </form>
 
 </div>
@@ -135,7 +172,7 @@ if (mood) {
 
  
   {playlist.length === 0 ? (
-    <p className='mr-[135px] font-bold'>Playlist not found</p>
+    <p className='mr-[119px] font-bold'>Playlist not found</p>
   ) : (
    <div className="p-6 bg-gray-100 min-h-screen">
   <h2 className="text-2xl font-bold mb-6 text-center mr-20">Your Spotify Playlist Songs</h2>
@@ -157,6 +194,7 @@ if (mood) {
           Open on Spotify
         </a>
         <p className="text-sm text-gray-600 mt-2">Tracks: {list.tracks.total}</p>
+       <button onClick={()=>likePlaylist(list)}>Like</button>
       </div>
     ))}
   </div>

@@ -2,12 +2,15 @@ const express= require('express')
 const mongoose=require('mongoose')
 const cors= require("cors")
 const Mood=require("./models/db")
+const Cmood=require("./models/cmoods")
+const Likedplaylist=require("./models/likeplaylists")
 const authRoutes=require("./routes/auth")
 require("dotenv").config()
  const app=express();
  app.use(express.json())
  const PORT= process.env.PORT ||8000
  const{searchPlaylists}=require("./src/spotify")
+const likedplaylist = require('./models/likeplaylists')
  app.use(cors())
 
 
@@ -37,21 +40,21 @@ res.json(moods)
 ////ADD CUSTOM MOOD
 app.get('/cmoods/:userId',async(req,res)=>{
   try{
-const CustomMoods= await Mood.find({userId:req.params.userId})
+const CustomMoods= await Cmood.find({userId:req.params.userId})
 res.json(CustomMoods.map(m=>m.mood))
   }
-  catch{
-
+  catch(err){
+ res.status(500).json({message:"Eror in fetching custom mood",eror:err})
   }
 })
 app.post('/addcmoods',async(req,res)=>{
   const{userId,mood}=req.body;
   try{
-const exist=await Mood.findOne({userId,mood})
+const exist=await Cmood.findOne({userId,mood})
 if(exist){
   return res.status(400).json({message:"Custom mood already exists"})
 }
-const newcustomMood= new Mood({userId,mood})
+const newcustomMood= new Cmood({userId,mood})
  await newcustomMood.save()
  res.status(201).json(newcustomMood)
 }
@@ -91,6 +94,49 @@ res.json(playlists)
 
    }
 })
+
+////liked playlist
+
+app.post("/saved-playlist", async (req, res) => {
+  try {
+  const {
+      userId,
+      playlistId,
+      name,
+      description,
+      imageUrl,
+      playlistUrl,
+      tracksTotal,
+    } = req.body;
+    const likedplaylist = new Likedplaylist({
+  userId,
+  playlistId,
+  name,
+  description,
+  imageUrl,
+  playlistUrl,
+  tracksTotal
+    });
+
+    await likedplaylist.save();
+
+    res.status(201).json({ message: "Playlist saved", likedplaylist });
+  } catch (error) {
+    console.error("Error in storing playlist:", error);
+    res.status(500).json({ message: "Error saving playlist", error });
+  }
+});
+
+app.get("/likedplaylist",async(req,res)=>{
+  try{
+    const likeplaylists=await Likedplaylist.find()
+    res.json(likeplaylists)
+  }catch(eror){
+ res.status(500).json({ error:'failed to playlist'})
+  }
+})
+
+
 //auntheticaton of routes
 app.use("/api/auth",authRoutes)
 

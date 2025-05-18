@@ -19,7 +19,7 @@ try{
     localStorage.setItem('userid',userId)
 
     alert("Login successfully")
-    navigate("/Home")
+      navigate("/Home")
 }
 catch(err){
     alert("Invalid user id or passowrd")
@@ -46,7 +46,7 @@ catch(err){
             className="w-full px-4 py-2 border text-shadow-pink-950 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  textx-pink-950"
             placeholder="Enter your user ID"
           />
-        </div>
+        </div>  
   
         <div>
           <label className="block    font-medium mb-1 text-shadow-pink-950">Password</label>

@@ -9,6 +9,8 @@ import Login from '../Components/Login'
 import Register from '../Components/Register'
 import Dashboard from '../Components/Dashboard'
 import ProtectedRoute from '../Components/ProtectedRoute'
+import AddMood from '../Components/AddMood'
+import LikdePlaylist from '../Components/LikdePlaylist'
 
 function App() {
 
@@ -25,6 +27,12 @@ function App() {
     <ProtectedRoute><LogMusic/></ProtectedRoute> 
     }/>
    <Route path='/register' element={<Register/>}/>
+      <Route path='/customMood' element={
+      <ProtectedRoute>
+       <AddMood/>
+      </ProtectedRoute>
+ 
+        }/>
    <Route path='/dashboard' element={
    <ProtectedRoute>
      <Dashboard/>
@@ -32,6 +40,8 @@ function App() {
    
   }
     />
+      <Route path='/likedPlaylist' element={
+        <LikdePlaylist/>}/>
       </Routes>
     </Router>
   )
